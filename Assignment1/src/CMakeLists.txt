@@ -1,0 +1,5 @@
+aux_source_directory(. LIB_SRCS)
+add_library(LibDemo ${LIB_SRCS})
+target_compile_features(LibDemo PRIVATE cxx_std_11)
+target_include_directories(LibDemo PRIVATE ${PROJECT_SOURCE_DIR}/includes ${OpenCV_INCLUDE_DIRS})
+target_link_libraries(LibDemo PRIVATE ${OpenCV_LIBS})
