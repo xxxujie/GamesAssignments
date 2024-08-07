@@ -1,8 +1,10 @@
+#include "assignment/rasterizer.hpp"
+
+#include <cmath>
+#include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Eigen>
 #include <iostream>
 #include <opencv2/opencv.hpp>
-
-#include "assignment/rasterizer.hpp"
 
 constexpr double MY_PI = 3.1415926;
 
@@ -21,17 +23,23 @@ Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
 
 Eigen::Matrix4f get_model_matrix(float rotation_angle)
 {
-    Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
-
     // TODO: Implement this function
     // Create the model matrix for rotating the triangle around the Z axis.
     // Then return it.
+    auto cos_theta = std::cos(rotation_angle);
+    auto sin_theta = std::sin(rotation_angle);
+
+    Eigen::Matrix4f model = Eigen::Matrix4f(
+        cos_theta, -sin_theta, 0, 0, sin_theta, cos_theta, 0, 0, 0, 0, 1, 0, 0,
+        0, 0, 1
+    );
 
     return model;
 }
 
-Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
-                                      float zNear, float zFar)
+Eigen::Matrix4f get_projection_matrix(
+    float eye_fov, float aspect_ratio, float zNear, float zFar
+)
 {
     // Students will implement this function
 
@@ -44,7 +52,7 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
     return projection;
 }
 
-int main(int argc, const char** argv)
+int main(int argc, const char **argv)
 {
     float angle = 0;
     bool command_line = false;
@@ -53,7 +61,7 @@ int main(int argc, const char** argv)
     if (argc >= 3)
     {
         command_line = true;
-        angle = std::stof(argv[2]);  // -r by default
+        angle = std::stof(argv[2]); // -r by default
         if (argc == 4)
         {
             filename = std::string(argv[3]);
