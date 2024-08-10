@@ -10,9 +10,8 @@
 using namespace Eigen;
 class Triangle
 {
-  public:
-    Vector3f v[3]; /*the original coordinates of the triangle, v0, v1, v2 in
-                      counter clockwise order*/
+public:
+    Vector3f v[3]; /*the original coordinates of the triangle, v0, v1, v2 in counter clockwise order*/
     /*Per vertex values*/
     Vector3f color[3];      // color at each vertex;
     Vector2f tex_coords[3]; // texture u,v
@@ -21,15 +20,23 @@ class Triangle
     // Texture *tex;
     Triangle();
 
-    Eigen::Vector3f a() const { return v[0]; }
-    Eigen::Vector3f b() const { return v[1]; }
-    Eigen::Vector3f c() const { return v[2]; }
+    Eigen::Vector3f a() const
+    {
+        return v[0];
+    }
+    Eigen::Vector3f b() const
+    {
+        return v[1];
+    }
+    Eigen::Vector3f c() const
+    {
+        return v[2];
+    }
 
-    void setVertex(int ind, Vector3f ver); /*set i-th vertex coordinates */
-    void setNormal(int ind, Vector3f n);   /*set i-th vertex normal vector*/
+    void setVertex(int ind, const Vector3f &ver);      /*set i-th vertex coordinates*/
+    void setNormal(int ind, const Vector3f &n);        /*set i-th vertex normalvector*/
     void setColor(int ind, float r, float g, float b); /*set i-th vertex color*/
-    void setTexCoord(int ind, float s,
-                     float t); /*set i-th vertex texture coordinate*/
+    void setTexCoord(int ind, float s, float t);       /*set i-th vertex texture coordinate*/
     std::array<Vector4f, 3> toVector4() const;
 };
 

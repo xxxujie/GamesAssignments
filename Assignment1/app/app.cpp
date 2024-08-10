@@ -1,8 +1,10 @@
 #include "assignment/rasterizer.hpp"
 
 #include <cmath>
+#include <cstdlib>
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Eigen>
+#include <eigen3/Eigen/src/Core/Matrix.h>
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
@@ -13,8 +15,7 @@ Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
     Eigen::Matrix4f view = Eigen::Matrix4f::Identity();
 
     Eigen::Matrix4f translate;
-    translate << 1, 0, 0, -eye_pos[0], 0, 1, 0, -eye_pos[1], 0, 0, 1,
-        -eye_pos[2], 0, 0, 0, 1;
+    translate << 1, 0, 0, -eye_pos[0], 0, 1, 0, -eye_pos[1], 0, 0, 1, -eye_pos[2], 0, 0, 0, 1;
 
     view = translate * view;
 
@@ -29,25 +30,32 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
     auto cos_theta = std::cos(rotation_angle);
     auto sin_theta = std::sin(rotation_angle);
 
-    Eigen::Matrix4f model = Eigen::Matrix4f(
-        cos_theta, -sin_theta, 0, 0, sin_theta, cos_theta, 0, 0, 0, 0, 1, 0, 0,
-        0, 0, 1
-    );
+    Eigen::Matrix4f model{};
+    model << cos_theta, -sin_theta, 0, 0, sin_theta, cos_theta, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1;
 
     return model;
 }
 
-Eigen::Matrix4f get_projection_matrix(
-    float eye_fov, float aspect_ratio, float zNear, float zFar
-)
+Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, float zFar)
 {
     // Students will implement this function
 
-    Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
+    // Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
 
     // TODO: Implement this function
     // Create the projection matrix for the given parameters.
     // Then return it.
+
+    // 计算 l, r, b, t
+    float top = std::abs(zNear) * std::tan(eye_fov / 2);
+    float right = top * aspect_ratio;
+    float bottom = -top;
+    float left = -right;
+
+    Eigen::Matrix4f projection{};
+    projection << (2 * zNear) / (right - left), 0, (left + right) / (left - right), 0, 0,
+        (2 * zNear) / (top - bottom), (bottom + top) / (bottom - top), 0, 0, 0,
+        (zNear + zFar) / (zNear - zFar), (2 * zNear * zFar) / (zFar - zNear), 0, 0, 1, 0;
 
     return projection;
 }
@@ -107,7 +115,7 @@ int main(int argc, const char **argv)
         return 0;
     }
 
-    while (key != 27)
+    while (key != 27 && key != 'q')
     {
         r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 

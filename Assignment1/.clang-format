@@ -102,7 +102,7 @@ BreakStringLiterals: true
 AlwaysBreakTemplateDeclarations: Yes
 # BreakTemplateDeclarations: Yes
 # 一行最长长度
-ColumnLimit:     80
+ColumnLimit:     108
 CommentPragmas:  '^ IWYU pragma:'
 CompactNamespaces: false
 ConstructorInitializerIndentWidth: 4
@@ -178,17 +178,19 @@ ObjCBreakBeforeNestedBlockParam: true
 ObjCSpaceAfterProperty: false
 ObjCSpaceBeforeProtocolList: true
 PackConstructorInitializers: BinPack
+# Penalty 代表其他规则之外的扩展，它是一个上限值
 PenaltyBreakAssignment: 2
-PenaltyBreakBeforeFirstCallParameter: 19
+PenaltyBreakBeforeFirstCallParameter: 80
 PenaltyBreakComment: 300
 PenaltyBreakFirstLessLess: 120
-PenaltyBreakOpenParenthesis: 0
+PenaltyBreakOpenParenthesis: 80
 PenaltyBreakScopeResolution: 500
 PenaltyBreakString: 1000
 PenaltyBreakTemplateDeclaration: 10
 PenaltyExcessCharacter: 1000000
 PenaltyIndentedWhitespace: 0
-PenaltyReturnTypeOnItsOwnLine: 60
+# 函数声明长度超过该值，返回值和名字之间就会换行，我不想换行，所以设置一个超大值
+PenaltyReturnTypeOnItsOwnLine: 50000
 PointerAlignment: Right
 PPIndentWidth:   -1
 QualifierAlignment: Leave

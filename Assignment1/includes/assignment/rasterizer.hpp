@@ -5,11 +5,12 @@
 #pragma once
 
 #include "Triangle.hpp"
-#include <algorithm>
+
 #include <eigen3/Eigen/Eigen>
 using namespace Eigen;
 
-namespace rst {
+namespace rst
+{
 enum class Buffers
 {
     Color = 1,
@@ -49,28 +50,31 @@ struct ind_buf_id
 
 class rasterizer
 {
-  public:
+public:
     rasterizer(int w, int h);
-    pos_buf_id load_positions(const std::vector<Eigen::Vector3f>& positions);
-    ind_buf_id load_indices(const std::vector<Eigen::Vector3i>& indices);
+    pos_buf_id load_positions(const std::vector<Eigen::Vector3f> &positions);
+    ind_buf_id load_indices(const std::vector<Eigen::Vector3i> &indices);
 
-    void set_model(const Eigen::Matrix4f& m);
-    void set_view(const Eigen::Matrix4f& v);
-    void set_projection(const Eigen::Matrix4f& p);
+    void set_model(const Eigen::Matrix4f &m);
+    void set_view(const Eigen::Matrix4f &v);
+    void set_projection(const Eigen::Matrix4f &p);
 
-    void set_pixel(const Eigen::Vector3f& point, const Eigen::Vector3f& color);
+    void set_pixel(const Eigen::Vector3f &point, const Eigen::Vector3f &color);
 
     void clear(Buffers buff);
 
     void draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, Primitive type);
 
-    std::vector<Eigen::Vector3f>& frame_buffer() { return frame_buf; }
+    std::vector<Eigen::Vector3f> &frame_buffer()
+    {
+        return frame_buf;
+    }
 
-  private:
+private:
     void draw_line(Eigen::Vector3f begin, Eigen::Vector3f end);
-    void rasterize_wireframe(const Triangle& t);
+    void rasterize_wireframe(const Triangle &t);
 
-  private:
+private:
     Eigen::Matrix4f model;
     Eigen::Matrix4f view;
     Eigen::Matrix4f projection;
@@ -85,6 +89,9 @@ class rasterizer
     int width, height;
 
     int next_id = 0;
-    int get_next_id() { return next_id++; }
+    int get_next_id()
+    {
+        return next_id++;
+    }
 };
 } // namespace rst
